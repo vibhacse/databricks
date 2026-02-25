@@ -1,0 +1,14 @@
+resources:
+  pipelines:
+    dab_etl_pipeline1:
+      name: dab_etl_pipeline1
+      libraries:
+        - glob:
+            include: ../src/dab_etl_pipeline1/transformations/**
+      catalog: freshcatalog2
+      channel: CURRENT
+      continuous: false
+      photon: true
+      root_path: ../src/dab_etl_pipeline1
+      schema: freshschema2
+      serverless: true

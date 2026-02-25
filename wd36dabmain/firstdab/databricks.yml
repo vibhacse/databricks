@@ -1,0 +1,45 @@
+# This is a Databricks asset bundle definition for firstdab.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: firstdab
+  uuid: 3c7bc4fd-a912-4526-b47d-4f5f34857e30
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+  table:                  
+    description: The table to use
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-56186289-ea84.cloud.databricks.com/ 
+    variables:
+      catalog: freshcatalog2
+      schema: freshschema2
+      table: dabtable1
+  prod:
+    mode: production
+    workspace:
+      host: http://127.0.0.1:7073
+      # We explicitly deploy to /Workspace/Users/vibhacse@gmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/vibhacse@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: yes
+      schema: prod
+    permissions:
+      - user_name: vibhacse@gmail.com
+        level: CAN_MANAGE
